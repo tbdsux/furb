@@ -61,7 +61,11 @@ class Furb:
     # pdf maker
     async def PDFMaker(self):
         # make the folder
-        os.mkdir(self.temp_dir)
+        try:
+            os.mkdir(self.temp_dir)
+        except FileExistsError:
+            pass
+
         os.chdir(self.temp_dir)
 
         # write pdf
@@ -80,5 +84,11 @@ class Furb:
 
         async with httpx.AsyncClient() as client:
             resp = await client.post(ANONFILES_API, files=files, timeout=None)
+
+        # remove the file
+        try:
+            os.remove(self.file)
+        except Exception:
+            pass
 
         return resp.json()
