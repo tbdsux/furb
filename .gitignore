@@ -1,5 +1,7 @@
 /venv
-/__pycache__
+__pycache__/
 node_modules
 .vscode
 static/style.css
+temp/
+test.py

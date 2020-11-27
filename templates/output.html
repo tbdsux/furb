@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Grab {{manga}}
+{% endblock title %}
+
+{% block content %}
+<div class="py-12 w-5/6 mx-auto">
+    <div>
+        <h1 class="text-xl font-black tracking-wide text-blue-600">furb</h1>
+    </div>
+    <hr>
+
+    <div class="w-3/4 mx-auto py-2">
+        <form action="" method="POST">
+            <label for="" class="text-lg font-light tracking-wide">Manhwa / Manga URL</label>
+            <div class="flex items-center justify-center w-11/12 mx-auto py-1">
+                <input type="text" class="py-1 px-2 text-lg border-b-2 font-thin tracking-wide mx-2 w-full text-blue-500 focus:border-blue-500 focus:outline-none" placeholder="Enter the url of the manga to grab..." value="{{query}}">
+                <input type="submit" value="GRAB" class="py-1 px-6 bg-blue-500 tracking-wide rounded text-white">
+            </div>
+        </form>
+
+        <div class="pt-6">
+            <h4 class="font-light tracking-wide">Chapters:</h4>
+            <hr class="my-3">
+            <div class="w-11/12 mx-auto">
+                <ul>
+                    {% for chapter in results %}
+                    <li class="flex items-center py-2 px-4 rounded bg-gray-100 font-light my-1">
+                        <p class="w-full tracking-wide truncate">{{manga}} -> {{chapter.chapter_name}}</p> <a href="/get/q/{{chapter.b64_hash}}" class="bg-green-600 opacity-75 hover:opacity-100 cursor-pointer text-white rounded py-1 px-4 tracking-wider">Generate</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

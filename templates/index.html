@@ -1,12 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
-    <title>Document</title>
-</head>
-<body>
-    <h1 class="text-blue-600">hello</h1>
-</body>
-</html>
+{% extends 'layout.html' %}
+
+{% block title %}
+Furb - Manga, Manhua, Manhwa Grabber
+{% endblock title %}
+
+{% block content %}
+<div class="h-screen flex items-center justify-center w-full">
+    <div class="w-1/2 mx-auto text-center">
+        <h2 class="text-3xl font-black tracking-wide text-blue-600">furb</h2>
+        <div class="mt-4">
+            <form action="" method="POST">
+                <div class="flex flex-col w-full my-1">
+                    <label for="" class="font-thin tracking-wide mb-1 text-lg">Enter the MANHWA / MANGA Url:</label>
+                    <input type="url" class="py-2 px-3 border-2 rounded w-full font-light tracking-wide text-lg" placeholder="Enter the url you want to download..." name="url">
+                </div>
+                <div class="my-1 w-1/3 mx-auto">
+                    <input type="submit" value="GRAB" class="w-full py-2 tracking-wide font-light text-lg rounded bg-blue-500 hover:bg-blue-600 cursor-pointer text-white">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
