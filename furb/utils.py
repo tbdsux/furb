@@ -28,7 +28,7 @@ async def grabber(chapter, img_list, url):
 
     # check if file exists
     if not session.file_checker():
-        grab = await session.Grabber()
+        grab = await session.AsyncGrabber()
 
         if grab:
             # write pdf

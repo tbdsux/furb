@@ -1,11 +1,12 @@
 import httpx
 from PIL import Image
 from io import BytesIO
-import img2pdf
 import grequests
 import os
 
 ANONFILES_API = "https://api.anonfiles.com/upload"
+
+LIMIT = 3  # concurrent requests for grequests
 
 
 class Furb:
@@ -29,17 +30,21 @@ class Furb:
 
         return False
 
-    async def Grabber(self):
-        # download each
-        ###### THIS WILL BE CHANGED TO ASYNCIO BUT THE FILES NEED TO BE IN ORDER FOR THE PDF
-        # for i in self.to_download:
-        #     await self.grab_image(i)
+    # Synchronous Grabber
+    async def SyncGrabber(self):
+        # download each, it may take some time
+        ##### THIS WILL BE CHANGED TO ASYNCIO BUT THE FILES NEED TO BE IN ORDER FOR THE PDF
+        for i in self.to_download:
+            await self.grab_image(i)
 
-        # if len(self.images) > 0:
-        #     return True
+        if len(self.images) > 0:
+            return True
+
+    # Multiple Grabber, Async
+    async def AsyncGrabber(self):
         rs = [grequests.get(i, headers=self.headers) for i in self.to_download]
 
-        for i in grequests.map(rs):
+        for i in grequests.map(rs, size=LIMIT):
             self.images.append(Image.open(BytesIO(i.content)).convert("RGB"))
 
         if len(self.images) > 0:
@@ -76,6 +81,4 @@ class Furb:
         async with httpx.AsyncClient() as client:
             resp = await client.post(ANONFILES_API, files=files, timeout=None)
 
-        self.upload_link = resp.json()["data"]["file"]["url"]["short"]
-
-        return self.upload_link
+        return resp.json()
