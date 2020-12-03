@@ -28,11 +28,11 @@ async def grabber(chapter, img_list, url):
 
     # check if file exists
     if not session.file_checker():
-        grab = await session.AsyncGrabber()
+        grab = await session.SyncGrabber()
 
         if grab:
             # write pdf
-            await session.PDFMaker()
+            await session.Folder_PDFMaker()
 
     # upload to anonfiles.com
     upload = await session.Upload_to_AnonFiles()

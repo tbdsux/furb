@@ -28,7 +28,7 @@ Grab {{manga}}
                 <ul class="max-h-screen h-auto overflow-y-scroll p-2">
                     {% for chapter in results %}
                     <li class="flex items-center justify-between py-2 px-4 rounded bg-gray-100 font-light my-1">
-                        <p class="w-full tracking-wide truncate">{{chapter.chapter_name}}</p><a href="/get/q/{{chapter.b64_hash}}" class="bg-green-600 opacity-75 hover:opacity-100 cursor-pointer text-white rounded py-1 px-4 tracking-wider">Generate</a>
+                        <p class="w-full tracking-wide truncate">{{chapter.chapter_name}}</p><a href="/get/q/{{chapter.b64_hash}}" target="_blank" class="bg-green-600 opacity-75 hover:opacity-100 cursor-pointer text-white rounded py-1 px-4 tracking-wider">Generate</a>
                     </li>
                     {% endfor %}
                 </ul>
