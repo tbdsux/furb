@@ -19,7 +19,7 @@ class Furb:
 
         # for downloading images
         self.to_download = chapter_images
-        self.headers = {"Referer": url}
+        self.headers = {"Referer": url}  # some sites require this
 
         # temporary dir name
         self.temp_dir = "temp"
@@ -71,15 +71,16 @@ class Furb:
         fname = "{:03d}".format(count) + ".jpg"
         if not os.path.exists(os.path.join(self.folder_dir, fname)):
             # save each image
-            raw_img = Image.open(BytesIO(resp.content)).convert("RGB")
-            raw_img.save(
-                os.path.join(
-                    self.folder_dir,
-                ),
-                "jpeg",
-            )
+            try:
+                raw_img = Image.open(BytesIO(resp.content)).convert("RGB")
+                raw_img.save(
+                    os.path.join(self.folder_dir, fname),
+                    "jpeg",
+                )
+            except Exception:
+                pass  # do nothing if there was a problem while trying to save the image
 
-    # Multiple Grabber, Async [USE THIS IF YOUR SERVER HAS A RAM OF 500MB AND ABOVE]
+    # Multiple Grabber, Async [USE THIS IF YOUR SERVER HAS A RAM OF 500MB(maybe, 1GB) AND ABOVE]
     async def AsyncGrabber(self):
         rs = [grequests.get(i, headers=self.headers) for i in self.to_download]
 
@@ -133,18 +134,23 @@ class Furb:
             )
         ]
 
-        try:
-            if not os.path.exists(self.file):
-                with open(self.file, "wb") as f:
-                    f.write(img2pdf.convert(self.images))
-        except Exception:
-            pass
+        # some images can't be downloaded because missing, or external problems,
+        # if there are no images found, do not continue
+        if len(self.images) > 0:
+            try:
+                if not os.path.exists(self.file):
+                    with open(self.file, "wb") as f:
+                        f.write(img2pdf.convert(self.images))
+            except Exception:
+                pass
 
-        # reset the chdir
-        os.chdir(self.main_working_dir)
+            # reset the chdir
+            os.chdir(self.main_working_dir)
 
-        # remove the downloaded files and dir
-        shutil.rmtree(self.folder_dir, ignore_errors=True)
+            # remove the downloaded files and dir
+            shutil.rmtree(self.folder_dir, ignore_errors=True)
+
+        return False
 
     # AnonFiles.com API Uploader
     async def Upload_to_AnonFiles(self):
