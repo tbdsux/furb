@@ -5,3 +5,4 @@ node_modules
 static/style.css
 temp/
 test.py
+.env

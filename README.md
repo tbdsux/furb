@@ -1,6 +1,9 @@
 # furb
 Simple Grabber and Downloader of Manga, Manhua, Manhwa
 
+#### NOTE:
+- **All download links generated are automatically cached or stored in a defined Database in order to avoid multiple similar files being uploaded to the file hosting site.**
+
 ## Frameworks Used
 - [**FastApi**](https://github.com/tiangolo/fastapi) - Main Backend Framework
 - [**TailwindCSS**](https://tailwindcss.com/) - HTML Design

@@ -7,8 +7,6 @@ import os
 import img2pdf
 import shutil
 
-ANONFILES_API = "https://api.anonfiles.com/upload"
-
 LIMIT = 3  # concurrent requests for grequests
 
 
@@ -150,19 +148,7 @@ class Furb:
             # remove the downloaded files and dir
             shutil.rmtree(self.folder_dir, ignore_errors=True)
 
+            # return the file path
+            return self.file
+
         return False
-
-    # AnonFiles.com API Uploader
-    async def Upload_to_AnonFiles(self):
-        files = {"file": (self.chapter_name, open(self.file, "rb"))}
-
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(ANONFILES_API, files=files, timeout=None)
-
-        # remove the file
-        try:
-            os.remove(self.file)
-        except Exception:
-            pass
-
-        return resp.json()
