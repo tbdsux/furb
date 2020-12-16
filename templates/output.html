@@ -24,11 +24,18 @@ Grab {{manga}}
             <h4 class="font-light tracking-wide">Chapters:</h4>
             <hr class="my-3">
             <div class="w-11/12 mx-auto">
-                <h3 class="font-light tracking-wide my-2">Manga: <span class="text-blue-500 font-bold">{{manga}}</span></h3>
+                <div class="flex items-center justify-between my-2">
+                    <h3 class="font-light tracking-wide">Manga: <span class="text-blue-500 font-bold truncate">{{manga}}</span></h3>
+                    <h3 class="font-light tracking-wide">Source: <span class="underline font-normal uppercase">{{source}}</span></h3>
+                </div>
                 <ul class="max-h-screen h-auto overflow-y-scroll p-2">
                     {% for chapter in results %}
                     <li class="flex items-center justify-between py-2 px-4 rounded bg-gray-100 font-light my-1">
-                        <p class="w-full tracking-wide truncate">{{chapter.chapter_name}}</p><a href="/get/q/{{chapter.b64_hash}}" target="_blank" class="bg-green-600 opacity-75 hover:opacity-100 cursor-pointer text-white rounded py-1 px-4 tracking-wider">Generate</a>
+                        <p class="w-full tracking-wide truncate">{{chapter.chapter_name}}</p>
+                        <form action="" method="POST" id="form-gen-dl" key="{{chapter.chapter_url}}" onsubmit="generateDownload(event, this)">
+                            <input type="hidden" name="chapter-url" value="{{chapter.b64_hash}}">
+                            <button id="generate-dl"  type="submit" class="bg-green-600 opacity-75 hover:opacity-100 cursor-pointer text-white font-light rounded py-1 px-4 tracking-wider">Generate</button>
+                        </form>
                     </li>
                     {% endfor %}
                 </ul>
@@ -37,3 +44,9 @@ Grab {{manga}}
     </div>
 </div>
 {% endblock content %}
+
+{% block ajax %}
+<script>
+    var _0x1352=['disabled','status','catch','open','querySelector','type','_blank','button','error','add','data','ERROR!;','post','onclick','then','ERROR!','value','preventDefault','classList','btoa','stringify','innerHTML','chapter-url'];(function(_0x39eeec,_0x265ed3){var _0x13521c=function(_0x5c7e83){while(--_0x5c7e83){_0x39eeec['push'](_0x39eeec['shift']());}};_0x13521c(++_0x265ed3);}(_0x1352,0x1e2));var _0x5c7e=function(_0x39eeec,_0x265ed3){_0x39eeec=_0x39eeec-0xec;var _0x13521c=_0x1352[_0x39eeec];return _0x13521c;};function generateDownload(_0x576b07,_0x3301bf){var _0x2423ed=_0x5c7e;_0x576b07[_0x2423ed(0xfe)]();var _0x43e430=_0x3301bf[_0x2423ed(0xf1)](_0x2423ed(0xf4));_0x43e430[_0x2423ed(0x102)]='Generating...',_0x43e430['disabled']=!![];const _0x4e2418=_0x3301bf[_0x2423ed(0xec)][_0x2423ed(0xfd)];let _0x438660={};fetch('/get/q/'+_0x4e2418,{'method':_0x2423ed(0xf9)})['then'](_0x58c6e9=>{var _0xbf196d=_0x2423ed;if(_0x58c6e9[_0xbf196d(0xee)]!==0xc8){_0x43e430['disabled']=!![],_0x43e430[_0xbf196d(0x102)]=_0xbf196d(0xfc);return;}_0x58c6e9['json']()[_0xbf196d(0xfb)](_0x235525=>{var _0x4788e0=_0xbf196d;if(_0x235525['code']!=0xc8){_0x43e430[_0x4788e0(0xed)]=!![],_0x43e430[_0x4788e0(0x102)]=_0x4788e0(0xf8);return;}_0x438660={'title':_0x235525[_0x4788e0(0xf7)]['title'],'dl_link':_0x235525[_0x4788e0(0xf7)]['link']},_0x43e430[_0x4788e0(0xf2)]=_0x4788e0(0xf4),_0x43e430['disabled']=![],_0x43e430['innerHTML']='DOWNLOAD',_0x43e430[_0x4788e0(0xff)]['remove']('bg-green-600'),_0x43e430['classList'][_0x4788e0(0xf6)]('bg-green-500');});})[_0x2423ed(0xef)](_0x172cbc=>{var _0x2fe5e3=_0x2423ed;console[_0x2fe5e3(0xf5)](_0x172cbc);}),_0x43e430[_0x2423ed(0xfa)]=()=>{var _0x46bdb9=_0x2423ed;_0x438660&&window[_0x46bdb9(0xf0)]('/download/q/'+window[_0x46bdb9(0x100)](JSON[_0x46bdb9(0x101)](_0x438660)),_0x46bdb9(0xf3));};}
+</script>
+{% endblock ajax %}
