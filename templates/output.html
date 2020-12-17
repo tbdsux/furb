@@ -48,6 +48,55 @@ Grab {{manga}}
 {% block ajax %}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    var _0x1bcb=['/download/q/','data','_blank','then','button','bg-green-600','open','disabled','link','classList','error','ERROR!','bg-green-500','catch','DOWNLOAD','Generating...','preventDefault','code','querySelector','innerHTML'];(function(_0x3f979d,_0x7da2a3){var _0x1bcb9c=function(_0x31925d){while(--_0x31925d){_0x3f979d['push'](_0x3f979d['shift']());}};_0x1bcb9c(++_0x7da2a3);}(_0x1bcb,0x10b));var _0x3192=function(_0x3f979d,_0x7da2a3){_0x3f979d=_0x3f979d-0x14c;var _0x1bcb9c=_0x1bcb[_0x3f979d];return _0x1bcb9c;};function generateDownload(_0x43a850,_0x1b57f7){var _0x4a7cd5=_0x3192;_0x43a850[_0x4a7cd5(0x155)]();var _0x5a54a0=_0x1b57f7[_0x4a7cd5(0x157)](_0x4a7cd5(0x15d));_0x5a54a0[_0x4a7cd5(0x158)]=_0x4a7cd5(0x154),_0x5a54a0[_0x4a7cd5(0x14c)]=!![];const _0x58e1e4=_0x1b57f7['chapter-url']['value'];let _0x5730ba={};axios['post']('/get/q/'+_0x58e1e4)[_0x4a7cd5(0x15c)](_0x3a3866=>{var _0x40499d=_0x4a7cd5;if(_0x3a3866['status']!==0xc8||_0x3a3866[_0x40499d(0x15a)][_0x40499d(0x156)]!==0xc8){_0x5a54a0['disabled']=!![],_0x5a54a0[_0x40499d(0x158)]=_0x40499d(0x150);return;}data=_0x3a3866['data'],_0x5730ba={'title':data[_0x40499d(0x15a)]['title'],'dl_link':data[_0x40499d(0x15a)][_0x40499d(0x14d)]},_0x5a54a0['type']=_0x40499d(0x15d),_0x5a54a0['disabled']=![],_0x5a54a0['innerHTML']=_0x40499d(0x153),_0x5a54a0[_0x40499d(0x14e)]['remove'](_0x40499d(0x15e)),_0x5a54a0[_0x40499d(0x14e)]['add'](_0x40499d(0x151));})[_0x4a7cd5(0x152)](_0x33cc4a=>{var _0x386d2a=_0x4a7cd5;console[_0x386d2a(0x14f)](_0x33cc4a);}),_0x5a54a0['onclick']=()=>{var _0x2b4967=_0x4a7cd5;_0x5730ba&&window[_0x2b4967(0x15f)](_0x2b4967(0x159)+window['btoa'](JSON['stringify'](_0x5730ba)),_0x2b4967(0x15b));};}
+    function generateDownload(e, form){
+        // prevent default action submit
+        e.preventDefault()
+
+        // get the button
+        var btnGen = form.querySelector("button")
+
+        // set the button text to generating
+        btnGen.innerHTML = 'Generating...'
+        btnGen.disabled = true;
+
+        // get the chapter_url value
+        const chapter_url = form['chapter-url'].value
+
+        let rdata = {};
+        
+        // fetch
+        axios.post('/get/q/' + chapter_url).then((resp) => {
+            if ((resp.status !== 200) || (resp.data['code'] !== 200)){
+                btnGen.disabled = true; // disable the button
+                btnGen.innerHTML = 'ERROR!';
+                return;
+            }
+
+            data = resp.data
+
+            // set the datas
+            rdata = {
+                'title' : data['data']['title'],
+                'dl_link' : data['data']['link']
+            }
+
+            // set the button
+            btnGen.type = 'button';
+            btnGen.disabled = false;
+            btnGen.innerHTML = 'DOWNLOAD';
+            btnGen.classList.remove('bg-green-600');
+            btnGen.classList.add('bg-green-500');
+        }).catch((err) => {
+            btnGen.disabled = false;
+            btnGen.innerHTML = 'retry';
+            console.error(err) // log the error
+        })
+
+        btnGen.onclick = () => {
+            if (rdata) {
+                window.open('/download/q/' + window.btoa(JSON.stringify(rdata)), '_blank');
+            }
+        }
+    }
 </script>
 {% endblock ajax %}
