@@ -12,13 +12,11 @@ Grab {{manga}}
     <hr>
 
     <div class="w-3/4 mx-auto py-2">
-        <form action="/" method="POST">
-            <label for="" class="text-lg font-light tracking-wide">Manhwa / Manga URL</label>
-            <div class="flex items-center justify-center w-11/12 mx-auto py-1">
-                <input type="text" name="url" class="py-1 px-2 text-lg border-b-2 font-thin tracking-wide mx-2 w-full text-blue-500 focus:border-blue-500 focus:outline-none" placeholder="Enter the url of the manga to grab..." value="{{query}}">
-                <input type="submit" value="GRAB" class="py-1 px-6 bg-blue-500 hover:bg-blue-600 cursor-pointer tracking-wide rounded text-white">
-            </div>
-        </form>
+        <label for="" class="text-lg font-light tracking-wide">Manhwa / Manga URL</label>
+        <div class="flex items-center justify-center w-11/12 mx-auto py-1">
+            <input type="text" readonly name="url" class="py-1 px-2 text-lg border-b-2 font-thin tracking-wide mx-2 w-3/4 text-blue-500 focus:border-blue-500 focus:outline-none" placeholder="Enter the url of the manga to grab..." value="{{query}}">
+            <a type="button" href="/" class="w-1/4 text-center py-2 px-6 bg-blue-500 hover:bg-blue-600 cursor-pointer tracking-wide rounded text-white">GRAB ANOTHER</a>
+        </div>
 
         <div class="pt-6">
             <h4 class="font-light tracking-wide">Chapters:</h4>
@@ -62,7 +60,7 @@ Grab {{manga}}
         // get the chapter_url value
         const chapter_url = form['chapter-url'].value
 
-        let rdata = {};
+        let rdata;
         
         // fetch
         axios.post('/get/q/' + chapter_url).then((resp) => {
