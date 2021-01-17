@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Response, status
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from utils.etc import decode_base64
@@ -9,7 +10,16 @@ from handlers.grab import grabber
 
 app = FastAPI()
 
+# setup cors middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
+# base model for posting data
+# to the /grab endpoint
 class URL(BaseModel):
     url: str
 
