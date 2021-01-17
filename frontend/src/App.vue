@@ -16,6 +16,7 @@
           class="border-2 py-3 px-4 text-lg tracking-wider rounded-lg w-full focus:outline-none focus:border-indigo-500 text-gray-600"
         />
         <button
+          @click="QueryManga"
           class="mt-2 md:mt-0 px-10 py-3 bg-indigo-400 hover:bg-indigo-500 text-white border-indigo-400 border-2 ml-2 rounded-lg text-lg uppercase tracking-wide"
         >
           query
@@ -38,6 +39,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 import Header from './components/Header.vue'
 import Results from './components/Results.vue'
 
@@ -50,7 +53,13 @@ export default {
   data() {
     return {
       manga_url_input: '',
+      chapters: [],
     }
+  },
+  methods: {
+    QueryManga() {
+      console.log(this.manga_url_input)
+    },
   },
 }
 </script>
