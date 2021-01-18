@@ -86,35 +86,37 @@ export default {
   },
   methods: {
     QueryManga() {
-      // change button text
-      this.btn_request_text = 'querying...'
+      console.log(process.env)
+      console.log(import.meta.env)
+      // // change button text
+      // this.btn_request_text = 'querying...'
 
-      axios
-        .post(
-          `${
-            process.env.NODE_ENV === 'production'
-              ? process.env.VITE_FURB_BACKEND_API
-              : import.meta.env.VITE_FURB_BACKEND_API
-          }/grab`,
-          {
-            url: this.manga_url_input,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-        .then((resp) => {
-          // set the manga
-          this.manga = resp.data
+      // axios
+      //   .post(
+      //     `${
+      //       process.env.NODE_ENV === 'production'
+      //         ? process.env.VITE_FURB_BACKEND_API
+      //         : import.meta.env.VITE_FURB_BACKEND_API
+      //     }/grab`,
+      //     {
+      //       url: this.manga_url_input,
+      //     },
+      //     {
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //     },
+      //   )
+      //   .then((resp) => {
+      //     // set the manga
+      //     this.manga = resp.data
 
-          // change states
-          this.request_done = true
-          this.btn_request_text = 'query'
-          this.query = false
-        })
-        .catch((e) => console.error(e))
+      //     // change states
+      //     this.request_done = true
+      //     this.btn_request_text = 'query'
+      //     this.query = false
+      //   })
+      //   .catch((e) => console.error(e))
     },
     Queuer() {},
   },
