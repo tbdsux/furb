@@ -88,6 +88,7 @@ export default {
     QueryManga() {
       console.log(process.env)
       console.log(import.meta.env)
+      console.log('import.meta\u200b.env.MODE')
       // // change button text
       // this.btn_request_text = 'querying...'
 
