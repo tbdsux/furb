@@ -68,6 +68,8 @@ import axios from 'axios'
 import Header from './components/Header.vue'
 import Chapter from './components/Chapter.vue'
 
+import { envs } from './utils/config'
+
 export default {
   name: 'App',
   components: {
@@ -88,7 +90,7 @@ export default {
     QueryManga() {
       console.log(process.env)
       console.log(import.meta.env)
-      console.log('import.meta\u200b.env.MODE')
+      console.log(envs)
       // // change button text
       // this.btn_request_text = 'querying...'
 

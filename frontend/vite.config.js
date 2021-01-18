@@ -1,3 +1,4 @@
+import path from 'path'
 import vue from '@vitejs/plugin-vue'
 
 const viteEnv = {}
@@ -7,9 +8,11 @@ Object.keys(process.env).forEach((key) => {
   }
 })
 
+console.log(viteEnv)
+
 export default {
   alias: {
-    '@': require('path').resolve(__dirname, 'src'),
+    '@': path.resolve(__dirname, 'src'),
   },
   define: viteEnv,
   plugins: [vue()],
