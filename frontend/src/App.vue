@@ -91,7 +91,11 @@ export default {
 
       axios
         .post(
-          `${import.meta.env.VITE_FURB_BACKEND_API}/grab`,
+          `${
+            process.env.NODE_ENV === 'production'
+              ? process.env.VITE_FURB_BACKEND_API
+              : import.meta.env.VITE_FURB_BACKEND_API
+          }/grab`,
           {
             url: this.manga_url_input,
           },

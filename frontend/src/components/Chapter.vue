@@ -48,9 +48,11 @@ export default {
       // request
       axios
         .get(
-          `${import.meta.env.VITE_FURB_BACKEND_API}/get/q/${
-            this.chapter.b64_hash
-          }`,
+          `${
+            process.env.NODE_ENV === 'production'
+              ? process.env.VITE_FURB_BACKEND_API
+              : import.meta.env.VITE_FURB_BACKEND_API
+          }/get/q/${this.chapter.b64_hash}`,
         )
         .then((resp) => {
           const grab = resp.data
