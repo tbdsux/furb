@@ -90,7 +90,7 @@ export default {
     QueryManga() {
       console.log(process.env)
       console.log(import.meta.env)
-      console.log(envs)
+      console.log(import.meta.env.VITE_FURB_BACKEND_API)
       // // change button text
       // this.btn_request_text = 'querying...'
 
