@@ -68,8 +68,6 @@ import axios from 'axios'
 import Header from './components/Header.vue'
 import Chapter from './components/Chapter.vue'
 
-import { envs } from './utils/config'
-
 export default {
   name: 'App',
   components: {
