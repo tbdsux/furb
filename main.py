@@ -14,7 +14,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins
-    allow_credentials=True, # Allows credentials
+    allow_credentials=True,  # Allows credentials
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
@@ -25,27 +25,52 @@ class URL(BaseModel):
     url: str
 
 
+# main index
 @app.get("/")
 async def index():
     return "Furb API - Backend Service"
 
 
+# grabber > query chapters handler
 @app.post("/grab")
-async def index(req: URL):
-    resp = manga(req.url)
+async def index(req: URL, response: Response):
+    # get the posted data from the basemodel
+    status_code, resp = manga(req.url)
 
-    manga_title = resp["title"]
-    results = resp["chapters"]
-    source = resp["source"]
+    ### CHECK FOR THE STATUS_CODE IF VALID / OK
+    if status_code == 404:
+        # return a 404 error
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"error": "404", "message": "Your request was not found."}
+    elif status_code == 500:
+        # return a 500 error
+        response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+        return {"error": "500", "message": "Internal server error problem."}
 
-    return {"manga_title": manga_title, "results": results, "source": source}
+    # return the response, 200
+    return {
+        "manga_title": resp["title"],
+        "results": resp["chapters"],
+        "source": resp["source"],
+    }
 
 
+# main downloader, this will
+# > download the chapter
+# > create a .pdf file from the images
+# > upload the pdf to the file hosting
 @app.get("/get/q/{b64_str}")
 async def generate_download(b64_str: str, response: Response):
+    # pre-define title and link
     title = ""
     link = ""
 
+    # try to decode the url sent
+    # it might be good to just use the url,
+    # but this is to ensure that the request
+    # should not be unnecessarily modified from
+    # the frontend by the client
+    # also, this is for url-safety
     try:
         url = decode_base64(b64_str)
     except Exception:
@@ -61,7 +86,17 @@ async def generate_download(b64_str: str, response: Response):
         link = check["link"]
     else:
         # get the chapter
-        resp = chapter(url)
+        status_code, resp = chapter(url)
+
+        ### CHECK FOR THE STATUS_CODE IF VALID / OK
+        if status_code == 404:
+            # return a 404 error
+            response.status_code = status.HTTP_404_NOT_FOUND
+            return {"error": "404", "message": "Your request was not found."}
+        elif status_code == 500:
+            # return a 500 error
+            response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+            return {"error": "500", "message": "Internal server error problem."}
 
         # download the images and create pdf
         file, chapter_filename = await grabber(resp["title"], resp["images"], url)
@@ -90,6 +125,8 @@ async def generate_download(b64_str: str, response: Response):
             response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
             return {"code": 500, "url": url, "message": "Internal Server Error"}
 
+    # 200 > response code,
+    # return the acquired response
     return {
         "code": 200,
         "url": url,
