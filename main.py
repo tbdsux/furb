@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Response, status
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from utils.etc import decode_base64
@@ -8,16 +9,24 @@ from handlers.caching import cacher, check_file_cache
 from handlers.uploading import upload_handler
 from handlers.grab import grabber
 
-app = FastAPI()
+# middleware setup [starlette]
+# solution from
+# >> https://github.com/tiangolo/fastapi/issues/1663#issuecomment-738075572
+middleware = [
+    Middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True,allow_methods=["*"], allow_headers=["*"])
+]
+
+
+app = FastAPI(middleware=middleware)
 
 # setup cors middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
-    allow_credentials=True, # Allows credentials
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],  # Allows all origins
+#     allow_credentials=True, # Allows credentials
+#     allow_methods=["*"],  # Allows all methods
+#     allow_headers=["*"],  # Allows all headers
+# )
 
 # base model for posting data
 # to the /grab endpoint
