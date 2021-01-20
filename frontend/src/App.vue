@@ -1,11 +1,21 @@
 <template>
   <main class="antialiased">
-    <div class="w-11/12 md:w-5/6 lg:w-4/5 mx-auto py-12">
+    <!-- service checker
+    this will be shown if the backend is being contacted
+    or it is currently down / not working
+     -->
+    <Service
+      v-if="!backendServiceStatus"
+      :serviceStatusMessage="backendContactStatus"
+    />
+
+    <!-- main app (show only if backend is working / alive) -->
+    <div v-else class="w-11/12 md:w-5/6 lg:w-4/5 mx-auto py-12">
       <Header />
 
       <hr class="my-4" />
 
-      <!-- main ulr input -->
+      <!-- main url input -->
       <div
         class="w-full sm:w-5/6 mx-auto flex flex-col md:flex-row items-center justify-center"
       >
@@ -65,12 +75,14 @@
 <script>
 import axios from 'axios'
 
+import Service from './components/Service.vue'
 import Header from './components/Header.vue'
 import Chapter from './components/Chapter.vue'
 
 export default {
   name: 'App',
   components: {
+    Service,
     Header,
     Chapter,
   },
@@ -82,6 +94,8 @@ export default {
       request_done: false,
       manga: {},
       queue: 0,
+      backendServiceStatus: false,
+      backendContactStatus: 'Contacting the BACKEND API Server...',
     }
   },
   methods: {
@@ -113,6 +127,22 @@ export default {
         .catch((e) => console.error(e))
     },
     Queuer() {},
+  },
+  mounted() {
+    // contact the backend api if it is on or not
+    axios
+      .get(`${import.meta.env.VITE_FURB_BACKEND_API}/api`)
+      .then(() => {
+        // update state status => true
+        this.backendServiceStatus = true
+        this.backendContactStatus = ''
+      })
+      .catch(() => {
+        // set failed status
+        this.backendServiceStatus = false
+        this.backendContactStatus =
+          'The BACKEND API Server is currently not working, please try again later.'
+      })
   },
 }
 </script>

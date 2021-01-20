@@ -3,7 +3,7 @@
 import base64
 
 
-BASE_API = "https://magna-sc.com/"
+BASE_API = "https://magna-sc.cf/"
 CHAPTERS = "chapters"
 MANGA = "manga"
 QUERY = "?q="
