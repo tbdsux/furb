@@ -10,7 +10,7 @@ LIMIT = 3  # concurrent requests for grequests
 
 
 class Furb:
-    def __init__(self, name: str, chapter_images: str, url: str) -> None:
+    def __init__(self, name: str, chapter_images: list, url: str) -> None:
         # pdf file name
         self.chapter_name = f"{name}.pdf"
 
@@ -54,8 +54,13 @@ class Furb:
                 await self.grab_image(num, i, client)
 
         # check if the files are downloaded to the folder name
-        if len(os.listdir(self.folder_dir)) > 0:
+        # the number of images downloaded should be equal
+        # to the images that are queued to be downloadede
+        if len(os.listdir(self.folder_dir)) == len(self.to_download):
             return True
+
+        # else,
+        return False
 
     # download each image
     async def grab_image(self, count: int, img_url: str, client: httpx.AsyncClient):
