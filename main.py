@@ -1,8 +1,10 @@
 from fastapi import FastAPI, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from starlette.status import HTTP_500_INTERNAL_SERVER_ERROR
 
 from utils.etc import decode_base64
+from utils.api import request_api
 from handlers.requests import manga, chapter
 from handlers.caching import cacher, check_file_cache
 from handlers.uploading import upload_handler
@@ -29,6 +31,17 @@ class URL(BaseModel):
 @app.get("/")
 async def index():
     return "Furb API - Backend Service"
+
+
+# scraper api service checker and ensurer
+@app.get("/api")
+async def api(response: Response):
+    if request_api():
+        return "OK"
+
+    # if scraper api is down
+    response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+    return "Backend API is currently down. Please try again later."
 
 
 # grabber > query chapters handler
