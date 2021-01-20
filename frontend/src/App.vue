@@ -15,6 +15,17 @@
 
       <hr class="my-4" />
 
+      <!-- queuer error message -->
+      <div class="mb-5" v-show="errorQueue">
+        <p class="text-center text-lg text-red-500">
+          Queued grabber are limited to
+          <span class="font-bold">TWO (2)</span>
+          concurrent requests.
+          <br />
+          Please wait for other requests to finish.
+        </p>
+      </div>
+
       <!-- main url input -->
       <div
         class="w-full sm:w-5/6 mx-auto flex flex-col md:flex-row items-center justify-center"
@@ -64,6 +75,9 @@
               v-for="chapter in manga.results"
               :key="manga.results.indexOf(chapter)"
               :chapter="chapter"
+              :errorQueue="errorQueue"
+              @add-queuer="Queuer('add')"
+              @subtract-queuer="Queuer('subtract')"
             ></chapter>
           </ul>
         </div>
@@ -94,6 +108,8 @@ export default {
       request_done: false,
       manga: {},
       queue: 0,
+      errorQueue: false,
+      maxSetQueue: 2,
       backendServiceStatus: false,
       backendContactStatus: 'Contacting the BACKEND API Server...',
     }
@@ -126,7 +142,29 @@ export default {
         })
         .catch((e) => console.error(e))
     },
-    Queuer() {},
+    Queuer(method) {
+      // for adding to queue
+      if (method === 'add') {
+        // if the requests == max grabber jobs
+        // this is to limit the amount of requests being
+        // sent to the backend server
+        // which could result to failing requests
+        if (this.queue === this.maxSetQueue) {
+          // show limit error
+          this.errorQueue = true
+        } else {
+          // otherwise, increment worker job
+          this.queue++
+        }
+      }
+      // for subtracting requests
+      else if (method === 'subtract') {
+        // decrement worker job
+        this.queue--
+        // do not show error
+        this.errorQueue = false
+      }
+    },
   },
   mounted() {
     // contact the backend api if it is on or not

@@ -22,6 +22,7 @@
         v-else
         @click.once="Grab"
         class="py-2 px-4 bg-indigo-500 opacity-90 hover:opacity-100 text-white rounded-lg"
+        :key="btnKey"
       >
         {{ btn_grab_text }}
       </button>
@@ -39,33 +40,51 @@ export default {
       btn_grab_text: 'grab',
       grab_done: false,
       download_link: '',
+      btnKey: 1,
     }
   },
   methods: {
     Grab() {
-      this.btn_grab_text = 'grabbing'
+      if (!this.errorQueue) {
+        // emit addition to the requests queuer
+        this.$emit('add-queuer')
+        // increment the button to re-enable the @click.once
+        // prob & sol: https://stackoverflow.com/questions/56041297/re-enable-button-click-once-after-clicking
+        this.btnKey++
+      }
 
-      // request
-      axios
-        .get(
-          `${import.meta.env.VITE_FURB_BACKEND_API}/get/q/${
-            this.chapter.b64_hash
-          }`,
-        )
-        .then((resp) => {
-          const grab = resp.data
+      // defer update from the props errorQueue
+      this.$nextTick(function () {
+        if (!this.errorQueue) {
+          this.btn_grab_text = 'grabbing'
 
-          // set download link
-          this.download_link = grab.data.link
+          // request
+          axios
+            .get(
+              `${import.meta.env.VITE_FURB_BACKEND_API}/get/q/${
+                this.chapter.b64_hash
+              }`,
+            )
+            .then((resp) => {
+              const grab = resp.data
 
-          // set state
-          this.grab_done = true
-        })
-        .catch((e) => console.error(e))
+              // set download link
+              this.download_link = grab.data.link
+
+              // set state
+              this.grab_done = true
+
+              // emit subtract to the requests queuer
+              this.$emit('subtract-queuer')
+            })
+            .catch((e) => console.error(e))
+        }
+      })
     },
   },
   props: {
     chapter: Object,
+    errorQueue: Boolean,
   },
 }
 </script>
