@@ -45,7 +45,7 @@
         </button>
         <button
           v-else
-          @click.once="QueryManga"
+          @click.once="AnotherSession"
           class="mt-2 md:mt-0 px-10 py-3 bg-gray-400 hover:bg-gray-500 text-white border-gray-400 border-2 ml-2 rounded-lg text-lg lowercase tracking-wide"
         >
           another
@@ -93,6 +93,18 @@ import Service from './components/Service.vue'
 import Header from './components/Header.vue'
 import Chapter from './components/Chapter.vue'
 
+const InitialData = () => {
+  return {
+    manga_url_input: '',
+    btn_request_text: 'query',
+    query: true,
+    request_done: false,
+    manga: {},
+    queue: 0,
+    errorQueue: false,
+  }
+}
+
 export default {
   name: 'App',
   components: {
@@ -102,13 +114,7 @@ export default {
   },
   data() {
     return {
-      manga_url_input: '',
-      btn_request_text: 'query',
-      query: true,
-      request_done: false,
-      manga: {},
-      queue: 0,
-      errorQueue: false,
+      ...InitialData(),
       maxSetQueue: 2,
       backendServiceStatus: false,
       backendContactStatus: 'Contacting the BACKEND API Server...',
@@ -164,6 +170,10 @@ export default {
         // do not show error
         this.errorQueue = false
       }
+    },
+    AnotherSession() {
+      // reset everything and create a new session
+      Object.assign(this.$data, InitialData())
     },
   },
   mounted() {
