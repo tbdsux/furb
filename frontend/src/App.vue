@@ -38,6 +38,7 @@
         />
         <button
           v-if="query"
+          :key="btn_request_key"
           @click.once="QueryManga"
           class="mt-2 md:mt-0 px-10 py-3 bg-indigo-400 hover:bg-indigo-500 text-white border-indigo-400 border-2 ml-2 rounded-lg text-lg uppercase tracking-wide"
         >
@@ -50,6 +51,14 @@
         >
           another
         </button>
+      </div>
+
+      <!-- form request error -->
+      <div class="mt-1 mb-3 sm:w-5/6 mx-auto" v-show="queryError">
+        <p class="text-red-500 text-center md:text-left">
+          There was a problem with your request. Please check the URL of the
+          Manga / Manhwa / Manhua and try again.
+        </p>
       </div>
 
       <!-- results -->
@@ -102,6 +111,7 @@ const InitialData = () => {
     manga: {},
     queue: 0,
     errorQueue: false,
+    queryError: false,
   }
 }
 
@@ -115,6 +125,7 @@ export default {
   data() {
     return {
       ...InitialData(),
+      btn_request_key: 1,
       maxSetQueue: 2,
       backendServiceStatus: false,
       backendContactStatus: 'Contacting the BACKEND API Server...',
@@ -145,8 +156,18 @@ export default {
           this.request_done = true
           this.btn_request_text = 'query'
           this.query = false
+          this.queryError = false
         })
-        .catch((e) => console.error(e))
+        .catch((_) => {
+          // show error, error could either mean that
+          // the inputted url is not valid / not the url of
+          // the manga itself
+          this.queryError = true
+
+          // reset button
+          this.btn_request_text = 'query'
+          this.btn_request_key++
+        })
     },
     Queuer(method) {
       // for adding to queue
@@ -189,7 +210,7 @@ export default {
         // set failed status
         this.backendServiceStatus = false
         this.backendContactStatus =
-          'The BACKEND API Server is currently not working, please try again later.'
+          'The BACKEND API Server is currently down, please try again later.'
       })
   },
 }

@@ -77,7 +77,17 @@ export default {
               // emit subtract to the requests queuer
               this.$emit('subtract-queuer')
             })
-            .catch((e) => console.error(e))
+            .catch((_) => {
+              // on error, rename button text to retry
+              // this will attemp to re-request again
+              // this is useful for larger downloads
+              // NOTE: not yet tested
+              this.btn_grab_text = 'retry'
+
+              // increment the button to re-enable the @click.once
+              // prob & sol: https://stackoverflow.com/questions/56041297/re-enable-button-click-once-after-clicking
+              this.btnKey++
+            })
         }
       })
     },
