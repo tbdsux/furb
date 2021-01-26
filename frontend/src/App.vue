@@ -37,7 +37,7 @@
           class="border-2 py-3 px-4 text-lg tracking-wider rounded-lg w-full focus:outline-none focus:border-indigo-500 text-gray-600"
         />
         <button
-          v-if="query"
+          v-show="query"
           :key="btn_request_key"
           @click.once="QueryManga"
           class="mt-2 md:mt-0 px-10 py-3 bg-indigo-400 hover:bg-indigo-500 text-white border-indigo-400 border-2 ml-2 rounded-lg text-lg uppercase tracking-wide"
@@ -45,7 +45,7 @@
           {{ btn_request_text }}
         </button>
         <button
-          v-else
+          v-show="!query"
           @click.once="AnotherSession"
           class="mt-2 md:mt-0 px-10 py-3 bg-gray-400 hover:bg-gray-500 text-white border-gray-400 border-2 ml-2 rounded-lg text-lg lowercase tracking-wide"
         >

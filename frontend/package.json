@@ -11,7 +11,7 @@
     "vue": "^3.0.4"
   },
   "devDependencies": {
-    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat",
     "@vue/compiler-sfc": "^3.0.4",
     "autoprefixer": "^9",
     "postcss": "^7",
