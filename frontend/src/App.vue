@@ -46,7 +46,7 @@
         </button>
         <button
           v-show="!query"
-          @click.once="AnotherSession"
+          @click="AnotherSession"
           class="mt-2 md:mt-0 px-10 py-3 bg-gray-400 hover:bg-gray-500 text-white border-gray-400 border-2 ml-2 rounded-lg text-lg lowercase tracking-wide"
         >
           another
@@ -112,7 +112,6 @@ const InitialData = () => {
     queue: 0,
     errorQueue: false,
     queryError: false,
-    btn_request_key: 1,
   }
 }
 
@@ -126,6 +125,7 @@ export default {
   data() {
     return {
       ...InitialData(),
+      btn_request_key: 1,
       maxSetQueue: 2,
       backendServiceStatus: false,
       backendContactStatus: 'Contacting the BACKEND API Server...',
@@ -154,6 +154,7 @@ export default {
 
           // change states
           this.request_done = true
+          this.btn_request_key++
           this.btn_request_text = 'query'
           this.query = false
           this.queryError = false
