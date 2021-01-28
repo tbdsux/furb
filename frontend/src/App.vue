@@ -112,6 +112,7 @@ const InitialData = () => {
     queue: 0,
     errorQueue: false,
     queryError: false,
+    btn_request_key: 1,
   }
 }
 
@@ -125,7 +126,6 @@ export default {
   data() {
     return {
       ...InitialData(),
-      btn_request_key: 1,
       maxSetQueue: 2,
       backendServiceStatus: false,
       backendContactStatus: 'Contacting the BACKEND API Server...',

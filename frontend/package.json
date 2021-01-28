@@ -17,5 +17,6 @@
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vite": "^1.0.0-rc.13"
-  }
+  },
+  "license": "MIT"
 }
