@@ -4,6 +4,7 @@ import os
 
 # ANONFILES.COM HOSTING API
 ANONFILES_API = "https://api.anonfiles.com/upload"
+BAYFILES_API = "https://api.bayfiles.com/upload"
 
 
 class Uploader:
@@ -19,6 +20,20 @@ class Uploader:
         files = {"file": (self.file_name, open(self.file_path, "rb"))}
 
         resp = httpx.post(ANONFILES_API, files=files, timeout=None).json()
+
+        # remove the file
+        try:
+            os.remove(self.file_path)
+        except Exception:
+            pass
+
+        return resp
+
+    # BayFiles.com API Uploader
+    def BayFiles(self):
+        files = {"file": (self.file_name, open(self.file_path, "rb"))}
+
+        resp = httpx.post(BAYFILES_API, files=files, timeout=None).json()
 
         # remove the file
         try:
