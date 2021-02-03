@@ -84,6 +84,9 @@ export default {
               // NOTE: not yet tested
               this.btn_grab_text = 'retry'
 
+              // emit subtract queuer
+              this.$emit('subtract-queuer')
+
               // increment the button to re-enable the @click.once
               // prob & sol: https://stackoverflow.com/questions/56041297/re-enable-button-click-once-after-clicking
               this.btnKey++
