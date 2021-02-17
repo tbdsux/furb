@@ -8,9 +8,12 @@ def upload_handler(file, filename):
     upload = Uploader(file_path=file, filename=filename)
 
     # check env on what file hosting to use
-    # use bayfiles.com if set
-    if os.getenv("FILE_HOST").lower() == "bayfiles":
-        return upload.BayFiles()
+    file_host = os.getenv("FILE_HOST")
+    
+    if file_host:
+        if file_host.lower() == "bayfiles":
+            # use bayfiles.com if set
+            return upload.BayFiles()
 
     # upload it to anonfiles.com
     # this is the default if not set
