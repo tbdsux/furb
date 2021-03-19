@@ -11,7 +11,7 @@ httptools==0.1.1
 httpx==0.16.1
 idna==2.10
 img2pdf==0.4.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 lxml==4.6.2
 MarkupSafe==1.1.1
 pikepdf==2.1.2
