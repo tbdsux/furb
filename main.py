@@ -1,3 +1,8 @@
+from dotenv import load_dotenv
+
+# load local.env
+load_dotenv()
+
 from fastapi import FastAPI, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -115,17 +120,17 @@ async def generate_download(b64_str: str, response: Response):
         file, chapter_filename = await grabber(resp["title"], resp["images"], url)
 
         # upload it
-        upload = upload_handler(file, chapter_filename)
+        upload = upload_handler(file)
 
-        if upload["status"]:
+        if upload.status:
             # cache the download link in order to speedup future requests
             cache = cacher(
                 data={
                     "request_url": url,
                     "file_name": chapter_filename,
                     "title": resp["title"],
-                    "upload_link": upload["data"]["file"]["url"]["short"],
-                    "anonfile_id": upload["data"]["file"]["metadata"]["id"],
+                    "upload_link": upload.data.file.url.short,
+                    "anonfile_id": upload.data.file.metadata.id,
                 }
             )
 

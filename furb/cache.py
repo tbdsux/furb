@@ -1,12 +1,10 @@
-from dotenv import load_dotenv
-
-# load local.env
-load_dotenv()
+from __future__ import annotations
 
 import os
 import pymongo
-import httpx
 from datetime import datetime
+
+from handlers.uploading import get_file_host
 
 
 ## UPDATE THESE VARS WITH YOUR DB INFO
@@ -26,9 +24,6 @@ class Cacher:
         anonfile_id: str = None,
     ) -> None:
         super().__init__()
-
-        self.ANONFILES_CHECKER_API = "https://api.anonfiles.com/v2/file/<ID>/info"
-
         # set the database
         client = pymongo.MongoClient(os.getenv("MONGO_DB"))
         db = client[DB_NAME]
@@ -36,6 +31,7 @@ class Cacher:
 
         # set the data
         self.request_url = request_url
+
         self.file_name = file_name
         self.link = link
         self.title = title
@@ -43,15 +39,14 @@ class Cacher:
 
     # check if the data exists
     def check(self):
+        u = get_file_host()
+
         data = self.collection.find_one({"request": self.request_url})
         if data:
-            resp = httpx.get(
-                self.ANONFILES_CHECKER_API.replace("<ID>", data["data"]["anonfile_id"]),
-                timeout=None,
-            ).json()
+            resp = u.info(data["data"]["anonfile_id"])
 
             # if the response is true, return the data
-            if resp["status"]:
+            if resp.status:
                 return data["data"]
 
             # remove existing cached if it is false,
