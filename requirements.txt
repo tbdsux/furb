@@ -32,7 +32,7 @@ requests==2.25.1
 rfc3986==1.4.0
 six==1.15.0
 sniffio==1.2.0
-soupsieve==2.0.1
+soupsieve==2.2.1
 starlette==0.13.6
 toml==0.10.2
 typing-extensions==3.7.4.3
