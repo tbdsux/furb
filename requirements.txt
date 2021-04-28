@@ -13,7 +13,7 @@ httptools==0.1.1
 httpx==0.16.1
 idna==2.10
 img2pdf==0.4.0
-importlib-metadata==3.10.0
+importlib-metadata==3.10.1
 iniconfig==1.1.1
 Jinja2==2.11.3
 lxml==4.6.3
