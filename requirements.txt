@@ -27,7 +27,7 @@ pydantic==1.7.2
 pymongo==3.11.2
 pyparsing==2.4.7
 pytest==6.2.2
-python-dotenv==0.15.0
+python-dotenv==0.17.0
 requests==2.25.1
 rfc3986==1.4.0
 six==1.15.0
