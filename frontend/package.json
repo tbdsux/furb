@@ -14,7 +14,7 @@
     "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat",
     "@vue/compiler-sfc": "3.0.5",
     "autoprefixer": "9.8.6",
-    "postcss": "7.0.35",
+    "postcss": "8.2.10",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vite": "1.0.0-rc.13"
   },
